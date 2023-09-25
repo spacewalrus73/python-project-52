@@ -4,6 +4,10 @@ MANAGE := poetry run python3 manage.py
 migrate:
 	@$(MANAGE) migrate
 
+.PHONY: migrations
+migrations:
+	@$(MANAGE) makemigrations
+
 .PHONY: shell
 shell:
 	@$(MANAGE) shell_plus --ipython
