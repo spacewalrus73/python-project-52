@@ -1,9 +1,7 @@
-from django.shortcuts import render
-from django.views import View
+from django.views.generic.base import TemplateView
 
 
-class Index(View):
+class Index(TemplateView):
 
-    @staticmethod
-    def get(request, *args, **kwargs):
-        return render(request, 'home.html')
+    template_name = 'home.html'
+
