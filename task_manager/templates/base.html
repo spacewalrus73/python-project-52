@@ -16,9 +16,8 @@
         {% include 'includes/nav-bar-outer.html' %}
     </nav>
     <div class="container wrapper flex-grow-1">
-        {% block content %}
-
-        {% endblock %}
+        {% bootstrap_messages %}
+        {% block content %}{% endblock %}
     </div>
     <footer class="mastfoot mt-auto text-center">
         <div class="inner">
