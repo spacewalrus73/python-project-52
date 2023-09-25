@@ -10,7 +10,7 @@
     <link href="https://getbootstrap.com/docs/4.5/examples/cover/cover.css" rel="stylesheet">
     <title>{% translate 'Task manager' %}</title>
 </head>
-<body class="d-flex flex-column min-vh-100 text-center">
+<body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-grey">
         <a class="navbar-brand" href="/">{% translate 'Task manager' %}</a>
         {% include 'includes/nav-bar-outer.html' %}
@@ -20,7 +20,7 @@
 
         {% endblock %}
     </div>
-    <footer class="mastfoot mt-auto">
+    <footer class="mastfoot mt-auto text-center">
         <div class="inner">
             <p>
                 <a href="https://ru.hexlet.io/">Hexlet</a>
