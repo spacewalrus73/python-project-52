@@ -17,9 +17,6 @@ class UserRegistrationForm(UserCreationForm):
     )
 
     field_order = ['first_name', 'last_name', 'username', 'password1', 'password2']
-    help_texts = {
-        'password1': _("Your password must contain at least 3 characters.")
-    }
 
     class Meta(UserCreationForm.Meta):
         model = User
