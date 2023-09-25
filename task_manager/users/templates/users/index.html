@@ -15,19 +15,19 @@
             </tr>
         </thead>
         <tbody>
-        <tr>
             {% for user in users %}
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.first_name }} {{ user.last_name }}</td>
-            <td>{{ user.date_joined }}</td>
-            <td>
-                <a href="#">{% translate 'Edit' %}</a>
-                <br>
-                <a href="#">{% translate 'Delete' %}</a>
-            </td>
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>
+                    <a href="#">{% translate 'Edit' %}</a>
+                    <br>
+                    <a href="#">{% translate 'Delete' %}</a>
+                </td>
+            </tr>
             {% endfor %}
-        </tr>
         </tbody>
     </table>
 </div>
