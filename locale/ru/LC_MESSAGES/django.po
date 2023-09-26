@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-25 16:25+0000\n"
+"POT-Creation-Date: 2023-09-26 18:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: task_manager/settings.py:112
+#: task_manager/settings.py:113
 msgid "English"
 msgstr "Английский"
 
-#: task_manager/settings.py:112
+#: task_manager/settings.py:113
 msgid "Russian"
 msgstr "Русский"
 
@@ -66,6 +66,18 @@ msgstr "Имя"
 msgid "Last name"
 msgstr "Фамилия"
 
+#: task_manager/users/templates/users/deletion.html:5
+msgid "User deletion"
+msgstr "Удаление пользователя"
+
+#: task_manager/users/templates/users/deletion.html:6
+msgid "Are you sure, you want to delete"
+msgstr "Вы уверены, что хотите удалить "
+
+#: task_manager/users/templates/users/deletion.html:9
+msgid "Yes, delete"
+msgstr "Да, удалить"
+
 #: task_manager/users/templates/users/index.html:11
 msgid "Username"
 msgstr "Имя пользователя"
@@ -89,3 +101,23 @@ msgstr "Удалить"
 #: task_manager/users/templates/users/registration.html:12
 msgid "Register"
 msgstr "Зарегистрировать"
+
+#: task_manager/users/templates/users/updation.html:6
+msgid "Update user"
+msgstr "Изменение пользователя"
+
+#: task_manager/users/templates/users/updation.html:12
+msgid "Update"
+msgstr "Изменить"
+
+#: task_manager/users/views.py:27
+msgid "User is successfully registered"
+msgstr "Пользователь успешно зарегистрирован"
+
+#: task_manager/users/views.py:39
+msgid "User successfully changed"
+msgstr "Пользователь успешно изменен"
+
+#: task_manager/users/views.py:50
+msgid "User successfully deleted"
+msgstr "Пользователь успешно удален"
