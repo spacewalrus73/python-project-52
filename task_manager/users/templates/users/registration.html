@@ -4,7 +4,7 @@
 {% block content %}
 <div class="form-signin w-50 m-auto">
     <h1 class="my-4">{% translate 'Registration' %}</h1>
-    <form action="{% url 'create_user' %}" method="post">
+    <form method="post">
         {% csrf_token %}
         {% for field in form %}
             {% bootstrap_field field size='lg' %}
