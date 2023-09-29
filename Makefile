@@ -35,3 +35,7 @@ compile:
 .PHONY: lint
 lint:
 	@poetry run flake8 task_manager
+
+.PHONY: port-clean
+port-clean:
+	sudo fuser -k 8000/tcp
