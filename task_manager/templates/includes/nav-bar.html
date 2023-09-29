@@ -1,0 +1,17 @@
+{% load i18n %}
+{% if user.is_authenticated %}
+    <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link" href="/users">{% translate 'Users' %}</a>
+        <a class="nav-link" href="#">{% translate 'Statuses' %}</a>
+        <a class="nav-link" href="#">{% translate 'Tags' %}</a>
+        <a class="nav-link" href="#">{% translate 'Tasks' %}</a>
+        <a class="nav-link" href="/logout">{% translate 'Log out' %}</a>
+    </nav>
+
+{% else %}
+    <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link" href="/users">{% translate 'Users' %}</a>
+        <a class="nav-link" href="/login">{% translate 'Enter' %}</a>
+        <a class="nav-link" href="/users/create">{% translate 'Registration' %}</a>
+    </nav>
+{% endif %}
