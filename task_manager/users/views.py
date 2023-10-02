@@ -35,7 +35,7 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
     form_class = UserRegistrationForm
     template_name = 'users/updation.html'
     context_object_name = 'user'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('list_user')
     success_message = _("User successfully changed")
 
 
