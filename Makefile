@@ -39,3 +39,7 @@ lint:
 .PHONY: port-clean
 port-clean:
 	sudo fuser -k 8000/tcp
+
+.PHONY: test
+test:
+	@$(MANAGE) test
