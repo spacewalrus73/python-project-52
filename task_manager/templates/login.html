@@ -6,7 +6,7 @@
 <div class="form-signin w-50 m-auto">
     <h1 class="my-4">{% translate 'Enter' %}</h1>
     {% if form.errors %}
-        {% bootstrap_alert _('Way') alert_type='danger' %}
+        {% bootstrap_alert form.non_field_errors alert_type='danger' %}
     {% endif %}
     <form method="post">
         {% csrf_token %}
