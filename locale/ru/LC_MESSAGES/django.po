@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-26 18:22+0000\n"
+"POT-Creation-Date: 2023-10-02 13:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: task_manager/settings.py:113
+#: task_manager/settings.py:114
 msgid "English"
 msgstr "Английский"
 
-#: task_manager/settings.py:113
+#: task_manager/settings.py:114
 msgid "Russian"
 msgstr "Русский"
 
@@ -44,27 +44,41 @@ msgstr "Практические курсы по программировани�
 msgid "Learn more"
 msgstr "Узнать больше"
 
-#: task_manager/templates/includes/nav-bar-outer.html:3
+#: task_manager/templates/includes/nav-bar.html:4
+#: task_manager/templates/includes/nav-bar.html:13
 #: task_manager/users/templates/users/index.html:6
 msgid "Users"
 msgstr "Пользователи"
 
-#: task_manager/templates/includes/nav-bar-outer.html:4
+#: task_manager/templates/includes/nav-bar.html:5
+msgid "Statuses"
+msgstr "Статусы"
+
+#: task_manager/templates/includes/nav-bar.html:6
+msgid "Tags"
+msgstr "Метки"
+
+#: task_manager/templates/includes/nav-bar.html:7
+msgid "Tasks"
+msgstr "Задачи"
+
+#: task_manager/templates/includes/nav-bar.html:8
+msgid "Log out"
+msgstr "Выйти"
+
+#: task_manager/templates/includes/nav-bar.html:14
+#: task_manager/templates/login.html:7
 msgid "Enter"
 msgstr "Вход"
 
-#: task_manager/templates/includes/nav-bar-outer.html:5
+#: task_manager/templates/includes/nav-bar.html:15
 #: task_manager/users/templates/users/registration.html:6
 msgid "Registration"
 msgstr "Регистрация"
 
-#: task_manager/users/forms.py:12
-msgid "First name"
-msgstr "Имя"
-
-#: task_manager/users/forms.py:16
-msgid "Last name"
-msgstr "Фамилия"
+#: task_manager/templates/login.html:16
+msgid "Log in"
+msgstr "Войти"
 
 #: task_manager/users/templates/users/deletion.html:5
 msgid "User deletion"
@@ -121,3 +135,17 @@ msgstr "Пользователь успешно изменен"
 #: task_manager/users/views.py:50
 msgid "User successfully deleted"
 msgstr "Пользователь успешно удален"
+
+#: task_manager/views.py:19
+msgid "You're logged in"
+msgstr "Вы залогинены"
+
+#: task_manager/views.py:27
+msgid "You're unlogged"
+msgstr "Вы разлогинены"
+
+#~ msgid "First name"
+#~ msgstr "Имя"
+
+#~ msgid "Last name"
+#~ msgstr "Фамилия"
