@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import logout
@@ -23,4 +24,5 @@ class UserLogin(SuccessMessageMixin, LoginView):
 
 def user_logout(request):
     logout(request)
+    messages.add_message(request, messages.INFO, _("You're unlogged"))
     return redirect('login')
