@@ -135,3 +135,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+#
+# FIXTURE_DIRS = os.path.join(
+#     os.path.abspath(os.path.dirname(__file__)),
+#     'fixtures'
+# )
