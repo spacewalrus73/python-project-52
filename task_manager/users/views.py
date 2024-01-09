@@ -1,11 +1,14 @@
 from django.urls import reverse_lazy
-from .forms import UserRegistrationForm
 from task_manager.users.models import User
 from django.views.generic.list import ListView
 from django.utils.translation import gettext_lazy as _
+from .forms import UserRegistrationForm, UserUpdateForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+from .permissions_mixins import (
+    UserLoginRequiredMixin,
+    UserRightsPassesTestMixin
+)
 
 class UserIndex(ListView):
     """
@@ -27,19 +30,25 @@ class UserCreate(SuccessMessageMixin, CreateView):
     success_message = _("User is successfully registered")
 
 
-class UserUpdate(SuccessMessageMixin, UpdateView):
+class UserUpdate(UserLoginRequiredMixin,
+                 UserRightsPassesTestMixin,
+                 SuccessMessageMixin,
+                 UpdateView):
     """
     User's updates form
     """
     model = User
-    form_class = UserRegistrationForm
-    template_name = 'users/updation.html'
+    form_class = UserUpdateForm
+    template_name = 'users/updating.html'
     context_object_name = 'user'
     success_url = reverse_lazy('list_user')
     success_message = _("User successfully changed")
 
 
-class UserDelete(SuccessMessageMixin, DeleteView):
+class UserDelete(UserLoginRequiredMixin,
+                 UserRightsPassesTestMixin,
+                 SuccessMessageMixin,
+                 DeleteView):
     """
     User's deletion view
     """
