@@ -22,11 +22,11 @@ db-clean:
 
 .PHONY: dev_server
 dev_server:
-	poetry run python3 manage.py runserver
+	@$(MANAGE) runserver
 
 .PHONY: messages
 messages:
-	poetry run python3 manage.py makemessages -l ru
+	@$(MANAGE) makemessages -l ru
 
 .PHONY: compile
 compile:
