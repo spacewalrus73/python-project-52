@@ -1,5 +1,5 @@
+from django.urls import reverse
 from django.contrib import messages
-from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
@@ -15,14 +15,14 @@ class Index(TemplateView):
 
 class UserLogin(SuccessMessageMixin, LoginView):
 
-    template_name = 'login.html'
+    template_name = 'registration/login.html'
     success_message = _("You're logged in")
 
     def get_success_url(self):
-        return reverse_lazy('index')
+        return reverse('index')
 
 
 def user_logout(request):
     logout(request)
-    messages.add_message(request, messages.INFO, _("You're unlogged"))
+    messages.add_message(request, messages.INFO, _("You're logged out"))
     return redirect('login')
