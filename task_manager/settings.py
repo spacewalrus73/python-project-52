@@ -13,7 +13,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
-from django.urls import reverse_lazy
+# from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +27,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False")
 
 ALLOWED_HOSTS = ['*']
 
@@ -135,8 +135,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
-#
-# FIXTURE_DIRS = os.path.join(
-#     os.path.abspath(os.path.dirname(__file__)),
-#     'fixtures'
-# )
+
+FIXTURE_DIRS = ["task_manager/tests/fixtures"]
