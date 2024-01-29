@@ -42,4 +42,4 @@ port-clean:
 
 .PHONY: test
 test:
-	@$(MANAGE) test
+	@$(MANAGE) test --parallel auto
