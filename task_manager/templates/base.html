@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-{% load django_bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load static %}
+
+<html lang="{{ LANGUAGE_CODE }}">
+
 <head>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://getbootstrap.com/docs/4.5/examples/cover/cover.css" rel="stylesheet">
-    <title>{% translate 'Task manager' %}</title>
+    <title>{% trans 'Task manager' %}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-grey">
-        <a class="navbar-brand" href="/">{% translate 'Task manager' %}</a>
+        <a class="navbar-brand p-2" href="/">{% trans 'Task manager' %}</a>
         {% include 'includes/nav-bar.html' %}
     </nav>
-    <div class="container wrapper flex-grow-1">
-        {% include 'includes/messages.html' %}
+    <div class="container wrapper flex-grow-1 my-4">
+        {% bootstrap_messages %}
         {% block content %}
 
         {% endblock %}

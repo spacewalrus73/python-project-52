@@ -2,18 +2,15 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 {% block content %}
-
 <div class="form-signin w-50 m-auto">
-    <h1 class="my-4">{% translate 'Enter' %}</h1>
-    {% if form.errors %}
-        {% bootstrap_alert form.non_field_errors alert_type='danger' %}
-    {% endif %}
+    <h1 class="my-4">{{ title }}</h1>
     <form method="post">
         {% csrf_token %}
+        {% bootstrap_form_errors form layout='inline' %}
         {% for field in form %}
             {% bootstrap_field field size='lg' %}
         {% endfor %}
-        {% bootstrap_button content=_("Log in") size='lg' button_class='btn-secondary' %}
+        {% bootstrap_button button_text size='lg' button_class='btn-secondary' %}
     </form>
 </div>
 {% endblock %}

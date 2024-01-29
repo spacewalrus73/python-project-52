@@ -1,17 +1,31 @@
 {% load i18n %}
 {% if user.is_authenticated %}
     <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link" href="/users">{% translate 'Users' %}</a>
-        <a class="nav-link" href="#">{% translate 'Statuses' %}</a>
-        <a class="nav-link" href="#">{% translate 'Tags' %}</a>
-        <a class="nav-link" href="#">{% translate 'Tasks' %}</a>
-        <a class="nav-link" href="/logout">{% translate 'Log out' %}</a>
+        <div class="p-2">
+            <a class="btn nav-link" href="{% url 'list_user' %}">{% trans 'Users' %}</a>
+        </div>
+        <div class="p-2">
+            <a class="btn nav-link" href="{% url 'list_status' %}">{% trans 'Statuses' %}</a>
+        </div>
+        <div class="p-2">
+            <a class="btn nav-link" href="#">{% trans 'Tags' %}</a>
+        </div>
+        <div class="p-2">
+            <a class="btn nav-link" href="#">{% trans 'Tasks' %}</a>
+        </div>
+        <div class="p-2">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="{% trans 'Log out' %}" class="btn nav-link ">
+            </form>
+        </div>
+
     </nav>
 
 {% else %}
     <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link" href="/users">{% translate 'Users' %}</a>
-        <a class="nav-link" href="/login">{% translate 'Enter' %}</a>
-        <a class="nav-link" href="/users/create">{% translate 'Registration' %}</a>
+        <a class="nav-link" href="{% url 'list_user' %}">{% trans 'Users' %}</a>
+        <a class="nav-link" href="{% url 'login' %}">{% trans 'Enter' %}</a>
+        <a class="nav-link" href="{% url 'create_user' %}">{% trans 'Registration' %}</a>
     </nav>
 {% endif %}
