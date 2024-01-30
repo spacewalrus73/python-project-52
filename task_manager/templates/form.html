@@ -6,7 +6,9 @@
     <h1 class="my-4">{{ title }}</h1>
     <form method="post">
         {% csrf_token %}
-        {% bootstrap_form_errors form layout='inline' %}
+        {% if not registration_form %}
+            {% bootstrap_form_errors form layout='inline' %}
+        {% endif %}
         {% for field in form %}
             {% bootstrap_field field size='lg' %}
         {% endfor %}
