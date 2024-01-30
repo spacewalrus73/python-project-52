@@ -20,6 +20,7 @@ from task_manager.views import UserIndexView, UserLoginView, UserLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('__debug__/', include("debug_toolbar.urls")),
     path('', UserIndexView.as_view(), name='home'),
     path('users/', include('task_manager.users.urls')),
     path('statuses/', include('task_manager.statuses.urls')),
