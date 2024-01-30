@@ -38,6 +38,8 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     extra_context = {
         "title": _("Registration"),
         "button_text": _("Register"),
+        # avoids duplicate form errors
+        "registration_form": True,
     }
     # SuccessMessageMixin attrs
     success_message = _("User is successfully registered")
