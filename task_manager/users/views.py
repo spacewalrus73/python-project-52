@@ -1,19 +1,16 @@
-from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import (
-    CreateView,
-    UpdateView,
-    DeleteView
-)
-from task_manager.settings import ADMIN_ID
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
+
+from task_manager.permission_mixins import UserLoginRequiredMixin
+from task_manager.permission_mixins import UserPermissionTestMixin
+from task_manager.users.forms import UserRegistrationForm
+from task_manager.users.forms import UserUpdateForm
 from task_manager.users.models import User
-from task_manager.users.forms import UserRegistrationForm, UserUpdateForm
-from task_manager.permission_mixins import (
-    UserLoginRequiredMixin,
-    UserPermissionTestMixin
-)
 
 
 class UserIndexView(ListView):
@@ -21,10 +18,14 @@ class UserIndexView(ListView):
     model = User
     template_name = "users_table.html"
     context_object_name = "users"
-
-    def get_queryset(self):
-        """Excludes admin from users list."""
-        return super().get_queryset().exclude(id=ADMIN_ID)
+    # Optimize orm query and exclude admin
+    queryset = User.objects.exclude(is_superuser=True).values(
+        'id',
+        'username',
+        'date_joined',
+        'first_name',
+        'last_name'
+    )
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
