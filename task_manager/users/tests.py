@@ -11,6 +11,7 @@ from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.permission_mixins import UserPermissionTestMixin
 from task_manager.users.forms import UserRegistrationForm
 from task_manager.users.models import User
+from task_manager.users.views import UserDeleteView
 from task_manager.users.views import UserUpdateView
 
 
@@ -230,3 +231,74 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
 
 class DeleteUserTest(MessagesTestMixin, TestCase):
     """Test delete user."""
+
+    fixtures = ["test_users"]
+
+    def setUp(self):
+        self.test_user = User.objects.first()
+        self.client.force_login(self.test_user)
+        self.view_response = self.client.get(
+            reverse_lazy("delete_user", kwargs={"pk": self.test_user.id})
+        )
+        self.login_err_message = UserLoginRequiredMixin.denied_message
+        self.rights_err = UserPermissionTestMixin.permission_denied_message
+        self.users_count = User.objects.count()
+        self.success_message = UserDeleteView.success_message
+
+    def test_delete_view_returns_correct_response(self):
+        self.assertEqual(self.view_response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(self.view_response, "delete.html")
+
+    def test_delete_view_contains_correct_context_values(self):
+        self.assertContains(self.view_response, "User deletion")
+        self.assertContains(self.view_response, "Yes, delete")
+        self.assertContains(self.view_response, f"{self.test_user.first_name}")
+        self.assertContains(self.view_response, f"{self.test_user.last_name}")
+
+    def test_not_auth_user_cant_delete_another_user(self):
+        self.test_user.is_active = False
+        self.test_user.save()
+        # 2 - id of second test_user,
+        # that could potentially be modified by active user
+        response = self.client.post(
+            path=reverse_lazy("delete_user", kwargs={"pk": 2}),
+            follow=True,
+        )
+
+        self.assertRedirects(response, "/login/?next=/users/2/delete/")
+        self.assertMessages(
+            response=response,
+            expected_messages=[
+                Message(message=self.login_err_message, level=ERROR)
+            ]
+        )
+
+    def test_user_cant_delete_staff_that_dont_belong_to_him(self):
+        response = self.client.post(
+            path=reverse_lazy("delete_user", kwargs={"pk": 2}),
+            follow=True,
+
+        )
+        self.assertRedirects(response, reverse_lazy("list_user"))
+        self.assertMessages(
+            response=response,
+            expected_messages=[
+                Message(message=self.rights_err, level=ERROR)
+            ]
+        )
+
+    def test_successfully_delete_user(self):
+        response = self.client.post(
+            path=reverse_lazy("delete_user", kwargs={"pk": self.test_user.id}),
+            follow=True,
+        )
+
+        self.assertRedirects(response, reverse_lazy("list_user"))
+        self.assertMessages(
+            response=response,
+            expected_messages=[
+                Message(message=self.success_message, level=SUCCESS)
+            ]
+        )
+        self.assertNotEqual(self.users_count, User.objects.count())
+        self.assertNotContains(response, self.test_user.username)
