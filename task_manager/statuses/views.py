@@ -1,16 +1,16 @@
-from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.utils.translation import gettext_lazy as _
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 
+from task_manager.permission_mixins import ProtectObjectDeletionMixin
+from task_manager.permission_mixins import TaskManagerFormMixin
+from task_manager.permission_mixins import UserLoginRequiredMixin
+from task_manager.statuses.forms import StatusForm
 from task_manager.statuses.models import Status
-from task_manager.statuses.forms import StatusCreationForm, StatusUpdateForm
-from task_manager.permission_mixins import (
-    UserLoginRequiredMixin,
-    TaskManagerFormMixin,
-    ProtectObjectDeletionMixin
-)
 
 
 class StatusIndexView(UserLoginRequiredMixin, ListView):
@@ -37,10 +37,11 @@ class StatusCreateView(UserLoginRequiredMixin,
     # CreateView attrs
     model = Status
     template_name = "form.html"
-    form_class = StatusCreationForm
+    form_class = StatusForm
     extra_context = {
         "title": _("Create status"),
         "button_text": _("Create"),
+        "registration_form": True,
     }
     success_url = reverse_lazy('list_status')
     # SuccessMessageMixin attrs
@@ -55,14 +56,14 @@ class StatusUpdateView(UserLoginRequiredMixin,
     """
     # UpdateView attrs
     model = Status
-    form_class = StatusUpdateForm
+    form_class = StatusForm
     template_name = 'form.html'
     success_url = reverse_lazy('list_status')
     extra_context = {
         "title": _("Change of status"),
         "button_text": _("Edit"),
     }
-    #SuccessMessageMixin attrs
+    # SuccessMessageMixin attrs
     success_message = _("Status successfully changed")
 
 
