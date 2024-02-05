@@ -10,9 +10,7 @@ class Status(models.Model):
                             verbose_name=_('Name'))
     created_at = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Creation date'))
-
-    def get_name(self) -> models.CharField:
-        return self.name
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _('Status')
