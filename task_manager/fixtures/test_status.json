@@ -6,5 +6,13 @@
       "name": "TestStatus",
       "created_at": "2024-02-05T12:48:13.123Z"
     }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 2,
+    "fields": {
+      "name": "SecondStatus",
+      "created_at": "2024-02-07T16:34:51.123Z"
+    }
   }
 ]
