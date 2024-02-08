@@ -41,7 +41,7 @@ class StatusCreateView(UserLoginRequiredMixin,
     extra_context = {
         "title": _("Create status"),
         "button_text": _("Create"),
-        "registration_form": True,
+        "needs_messages": True,
     }
     success_url = reverse_lazy('list_status')
     # SuccessMessageMixin attrs
@@ -62,6 +62,7 @@ class StatusUpdateView(UserLoginRequiredMixin,
     extra_context = {
         "title": _("Change of status"),
         "button_text": _("Edit"),
+        "needs_messages": True,
     }
     # SuccessMessageMixin attrs
     success_message = _("Status successfully changed")
