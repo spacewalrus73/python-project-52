@@ -11,8 +11,10 @@ from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.permission_mixins import UserPermissionTestMixin
 from task_manager.users.forms import UserRegistrationForm
 from task_manager.users.models import User
+from task_manager.users.views import UserCreateView
 from task_manager.users.views import UserDeleteView
 from task_manager.users.views import UserUpdateView
+from task_manager.views import UserLoginView
 
 
 class CreateUserTest(MessagesTestMixin, TestCase):
@@ -20,12 +22,16 @@ class CreateUserTest(MessagesTestMixin, TestCase):
 
     fixtures = ["test_users"]
 
+    passwrd_mismatch: str = UserRegistrationForm.error_messages.get(
+            "password_mismatch"
+        )
+    unique_username: str = "A user with that username already exists."
+    test_name: str = "TestUser"
+    test_passwd: str = "000"
+    users_count: int = User.objects.count()
+
     def setUp(self):
         self.view_response = self.client.get(reverse_lazy("create_user"))
-        self.form = UserRegistrationForm
-        self.test_name = "TestUser"
-        self.test_passwd = "000"
-        self.users_count = User.objects.count()
 
     def test_create_view_returns_correct_response(self):
         self.assertEqual(self.view_response.status_code, HTTPStatus.OK)
@@ -49,7 +55,6 @@ class CreateUserTest(MessagesTestMixin, TestCase):
                 "username": self.test_name,
                 "password1": self.test_passwd,
                 "password2": self.test_passwd,
-
             },
             follow=True
         )
@@ -58,9 +63,7 @@ class CreateUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(
-                    level=SUCCESS, message="User is successfully registered"
-                )
+                Message(level=SUCCESS, message=UserCreateView.success_message)
             ]
         )
         # Check that user was created in db
@@ -77,10 +80,7 @@ class CreateUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=login_response,
             expected_messages=[
-                Message(
-                    message="You're logged in",
-                    level=SUCCESS,
-                )
+                Message(message=UserLoginView.success_message, level=SUCCESS)
             ]
         )
 
@@ -94,17 +94,15 @@ class CreateUserTest(MessagesTestMixin, TestCase):
                 "password1": self.test_passwd,
                 # Make different second password
                 "password2": self.test_passwd + "0",
-
             },
             follow=True
         )
-        err_message = self.form.error_messages.get("password_mismatch")
 
-        self.assertContains(response, err_message)
+        self.assertContains(response, self.passwrd_mismatch)
 
     def test_invalid_user_registration_with_unique_username(self):
         # Check that fixture was loaded
-        exists_user = User.objects.get(username="PythonLover")
+        exists_user = User.objects.first()
 
         self.assertEqual(exists_user.username, "PythonLover")
 
@@ -117,13 +115,10 @@ class CreateUserTest(MessagesTestMixin, TestCase):
                 "username": exists_user.username,
                 "password1": self.test_passwd,
                 "password2": self.test_passwd,
-
             }
         )
-        self.assertContains(
-            response=response,
-            text="A user with that username already exists."
-        )
+
+        self.assertContains(response, self.unique_username)
 
 
 class UpdateUserTest(MessagesTestMixin, TestCase):
@@ -131,15 +126,20 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
 
     fixtures = ["test_users"]
 
+    new_data: dict = {
+        "first_name": "NewFirstName",
+        "last_name": "NewLastName",
+        "username": "NewUserName",
+        "password1": "NewPasswd",
+        "password2": "NewPasswd",
+    }
+
     def setUp(self):
         self.test_user = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
             reverse_lazy("update_user", kwargs={"pk": self.test_user.id})
         )
-        self.success_message_update = UserUpdateView.success_message
-        self.login_err_message = UserLoginRequiredMixin.denied_message
-        self.rights_err = UserPermissionTestMixin.permission_denied_message
 
     def test_update_view_returns_correct_response(self):
         self.assertEqual(self.view_response.status_code, HTTPStatus.OK)
@@ -172,7 +172,10 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message=self.login_err_message, level=ERROR)
+                Message(
+                    message=UserLoginRequiredMixin.denied_message,
+                    level=ERROR
+                )
             ]
         )
 
@@ -187,21 +190,18 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.assertRedirects(response, reverse_lazy("list_user"))
         self.assertMessages(
             response=response,
-            expected_messages=[Message(message=self.rights_err, level=ERROR)]
+            expected_messages=[
+                Message(
+                    message=UserPermissionTestMixin.permission_denied_message,
+                    level=ERROR
+                )
+            ]
         )
 
     def test_successful_update_user(self):
-        new_data = {
-                "first_name": "NewFirstName",
-                "last_name": "NewLastName",
-                "username": "NewUserName",
-                "password1": "NewPasswd",
-                "password2": "NewPasswd",
-            }
-
         response = self.client.post(
             path=reverse_lazy("update_user", kwargs={"pk": self.test_user.id}),
-            data=new_data,
+            data=self.new_data,
             follow=True,
         )
 
@@ -209,23 +209,28 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message=self.success_message_update, level=SUCCESS)
+                Message(
+                    message=UserUpdateView.success_message,
+                    level=SUCCESS
+                )
             ]
         )
 
-        updated_test_user = User.objects.get(username=new_data.get("username"))
+        updated_test_user = User.objects.get(
+            username=self.new_data.get("username")
+        )
 
         self.assertEqual(
             updated_test_user.first_name,
-            new_data.get("first_name")
+            self.new_data.get("first_name")
         )
         self.assertEqual(
             updated_test_user.last_name,
-            new_data.get("last_name")
+            self.new_data.get("last_name")
         )
         self.assertEqual(
             updated_test_user.username,
-            new_data.get("username")
+            self.new_data.get("username")
         )
 
 
@@ -234,16 +239,14 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
 
     fixtures = ["test_users"]
 
+    users_count: int = User.objects.count()
+
     def setUp(self):
         self.test_user = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
             reverse_lazy("delete_user", kwargs={"pk": self.test_user.id})
         )
-        self.login_err_message = UserLoginRequiredMixin.denied_message
-        self.rights_err = UserPermissionTestMixin.permission_denied_message
-        self.users_count = User.objects.count()
-        self.success_message = UserDeleteView.success_message
 
     def test_delete_view_returns_correct_response(self):
         self.assertEqual(self.view_response.status_code, HTTPStatus.OK)
@@ -269,7 +272,10 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message=self.login_err_message, level=ERROR)
+                Message(
+                    message=UserLoginRequiredMixin.denied_message,
+                    level=ERROR
+                )
             ]
         )
 
@@ -283,7 +289,10 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message=self.rights_err, level=ERROR)
+                Message(
+                    message=UserPermissionTestMixin.permission_denied_message,
+                    level=ERROR
+                )
             ]
         )
 
@@ -297,7 +306,10 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message=self.success_message, level=SUCCESS)
+                Message(
+                    message=UserDeleteView.success_message,
+                    level=SUCCESS
+                )
             ]
         )
         self.assertNotEqual(self.users_count, User.objects.count())
