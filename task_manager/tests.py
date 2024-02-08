@@ -1,11 +1,15 @@
 from http import HTTPStatus
+
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.messages import INFO
+from django.contrib.messages import Message
+from django.contrib.messages import SUCCESS
+from django.contrib.messages.test import MessagesTestMixin
 from django.test import TestCase
 from django.urls import reverse_lazy
-from django.contrib.messages import Message, SUCCESS
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.messages.test import MessagesTestMixin
 
 from task_manager.users.models import User
+from task_manager.views import UserLoginView
 
 
 class HomePageTest(TestCase):
@@ -30,10 +34,17 @@ class HomePageTest(TestCase):
 
 class AuthSystemTest(MessagesTestMixin, TestCase):
     """Test login and logout user."""
+
+    test_username: str = "TestUser"
+    test_password: str = "123"
+    error_message: str = (
+            AuthenticationForm.
+            error_messages.
+            get("invalid_login") % {"username": "username"}
+    )
+
     def setUp(self):
         self.get_response = self.client.get(reverse_lazy("login"))
-        self.test_username = "TestUser"
-        self.test_password = "123"
 
     def test_login_page_returns_correct_response(self):
         self.assertTemplateUsed(self.get_response, "form.html")
@@ -72,7 +83,7 @@ class AuthSystemTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message="You're logged in", level=SUCCESS),
+                Message(message=UserLoginView.success_message, level=SUCCESS)
             ]
         )
         # These fields are only available after login
@@ -92,10 +103,8 @@ class AuthSystemTest(MessagesTestMixin, TestCase):
             },
             follow=True,
         )
-        # get original string of error message from form
-        err_message = AuthenticationForm.error_messages.get("invalid_login")
-        # Because of original string contains variable, inserts into username
-        self.assertContains(response, err_message % {"username": "username"})
+
+        self.assertContains(response, self.error_message)
         # If login failed, response must not contain these links
         self.assertNotContains(response, "Statuses")
         self.assertNotContains(response, "Tags")
@@ -112,9 +121,8 @@ class AuthSystemTest(MessagesTestMixin, TestCase):
         self.assertMessages(
             response=response,
             expected_messages=[
-                Message(message="You're logged out", level=SUCCESS)
+                Message(message="You're logged out", level=INFO)
             ]
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse_lazy("home"))
-
