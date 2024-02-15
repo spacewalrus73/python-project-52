@@ -2,6 +2,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django_filters.views import FilterView
 
@@ -43,6 +44,24 @@ class TaskCreateView(UserLoginRequiredMixin,
     success_message = _("Task successfully created")
 
     def form_valid(self, form):
-        """Add authorized user as author."""
+        """Add authorized user as an author."""
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class TaskUpdateView(UserLoginRequiredMixin,
+                     SuccessMessageMixin,
+                     UpdateView):
+    """Tasks update view."""
+
+    model = Task
+    form_class = TaskForm
+    template_name = "form.html"
+    success_url = reverse_lazy("list_task")
+    extra_context = {
+        "title": _("Task modification"),
+        "button_text": "Change",
+        "needs_messages": False,
+    }
+    # SuccessMessageMixin
+    success_message = _("Task successfully changed")
