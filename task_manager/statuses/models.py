@@ -12,6 +12,9 @@ class Status(models.Model):
                                       verbose_name=_('Creation date'))
     objects = models.Manager()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = _('Status')
         verbose_name_plural = _('Statuses')
