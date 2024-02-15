@@ -10,11 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
-import dj_database_url
 from pathlib import Path
+
+import dj_database_url
 from dotenv import load_dotenv
-# from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,9 +49,11 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_filters',
     'django_extensions',
+
     'task_manager',
     'task_manager.users',
     'task_manager.statuses',
+    'task_manager.tasks',
 ]
 
 MIDDLEWARE = [
@@ -107,7 +108,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa: E501
         "OPTIONS": {
             'min_length': 3,
         }
@@ -118,7 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = os.getenv("LANGUAGE_CODE") if os.getenv("LANGUAGE_CODE") else 'ru-ru'
+LANGUAGE_CODE = os.getenv("LANGUAGE_CODE") if os.getenv("LANGUAGE_CODE") \
+    else 'ru-ru'
 
 LANGUAGES = (
     ('en-us', 'English'),
