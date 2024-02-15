@@ -23,7 +23,7 @@ repos:
           entry: flake8
           language: system
           types: [python]
-          args: [--max-line-length=79, --exclude=*.git *.html __pycache__ docs build dist migrations]
+          args: [--max-line-length=79, --exclude=*.git *.html __pycache__ docs build dist migrations/]
 
         - id: pyupgrade
           name: pyupgrade
