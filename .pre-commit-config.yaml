@@ -30,11 +30,11 @@ repos:
           entry: pyupgrade
           language: system
           types: [python]
-          args: [--py37-plus]
+          args: [--py310-plus]
 
         - id: reorder-python-imports
           name: reorder-python-imports
           entry: reorder-python-imports
           language: system
           types: [python]
-          args: [--py37-plus]
+          args: [--py310-plus]
