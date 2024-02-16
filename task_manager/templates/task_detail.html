@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+<h1 class="my-4">{% trans "Task detail preview" %}</h1>
+    <div class="card">
+        <div class="card-header bg-warning text-white">
+            <h2>{{ object.name }}</h2>
+        </div>
+        <div class="card-body bg-secondary">
+            <p>{{ object.description }}</p>
+        </div>
+        <div class="container text-dark bg-secondary">
+            <div class="row p-1">
+                <div class="col">{% trans "Author" %}</div>
+                <div class="col">{{ object.author }}</div>
+            </div>
+            <div class="row p-1">
+                <div class="col">{% trans "Performer" %}</div>
+                <div class="col">{{ object.performer }}</div>
+            </div>
+            <div class="row p-1">
+                <div class="col">{% trans "Status" %}</div>
+                <div class="col">{{ object.status }}</div>
+            </div>
+            <div class="row p-1">
+                <div class="col">{% trans "Creation date" %}</div>
+                <div class="col">{{ object.created_at|date:"d.m.Y H:i" }}</div>
+            </div>
+            <div class="row p-1">
+                <div class="col"><a href="{% url 'update_task' pk=object.id %}">{% trans "Edit" %}</a></div>
+            </div>
+            <div class="row p-1">
+                <div class="col"><a href="{% url 'delete_task' pk=object.id %}">{% trans "Delete" %}</a></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

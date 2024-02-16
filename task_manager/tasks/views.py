@@ -1,10 +1,11 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic.edit import CreateView
-from django.views.generic.edit import DeleteView
-from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
+from django.views.generic import CreateView
+from django.views.generic import DeleteView
+from django.views.generic import DetailView
+from django.views.generic import ListView
+from django.views.generic import UpdateView
 from django_filters.views import FilterView
 
 from task_manager.permission_mixins import TaskDeletionTestMixin
@@ -14,9 +15,7 @@ from task_manager.tasks.forms import TaskForm
 from task_manager.tasks.models import Task
 
 
-class TaskIndexView(UserLoginRequiredMixin,
-                    FilterView,
-                    ListView):
+class TaskIndexView(UserLoginRequiredMixin, FilterView, ListView):
     """List all tasks. Authorization required."""
     model = Task
     template_name = "tasks_table.html"
@@ -27,9 +26,13 @@ class TaskIndexView(UserLoginRequiredMixin,
     }
 
 
-class TaskCreateView(UserLoginRequiredMixin,
-                     SuccessMessageMixin,
-                     CreateView):
+class TaskDetailView(UserLoginRequiredMixin, DetailView):
+    """Show task info page."""
+    model = Task
+    template_name = "task_detail.html"
+
+
+class TaskCreateView(UserLoginRequiredMixin, SuccessMessageMixin, CreateView):
     """The view shows create from for new task. Authorization required."""
     # CreateView attrs
     model = Task
@@ -51,9 +54,7 @@ class TaskCreateView(UserLoginRequiredMixin,
         return super().form_valid(form)
 
 
-class TaskUpdateView(UserLoginRequiredMixin,
-                     SuccessMessageMixin,
-                     UpdateView):
+class TaskUpdateView(UserLoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """Tasks update view."""
 
     model = Task
