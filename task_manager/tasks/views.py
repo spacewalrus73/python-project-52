@@ -2,10 +2,12 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django_filters.views import FilterView
 
+from task_manager.permission_mixins import TaskDeletionTestMixin
 from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.tasks.forms import TaskFilterForm
 from task_manager.tasks.forms import TaskForm
@@ -65,3 +67,16 @@ class TaskUpdateView(UserLoginRequiredMixin,
     }
     # SuccessMessageMixin
     success_message = _("Task successfully changed")
+
+
+class TaskDeleteView(UserLoginRequiredMixin,
+                     TaskDeletionTestMixin,
+                     SuccessMessageMixin,
+                     DeleteView):
+    model = Task
+    template_name = "delete.html"
+    success_url = reverse_lazy("list_task")
+    extra_context = {
+        "title": _("Task deletion"),
+        "url_for_delete": "delete_task",
+    }

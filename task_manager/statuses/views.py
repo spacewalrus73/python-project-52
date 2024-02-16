@@ -7,10 +7,10 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from task_manager.permission_mixins import ProtectObjectDeletionMixin
-from task_manager.permission_mixins import TaskManagerFormMixin
 from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.statuses.forms import StatusForm
 from task_manager.statuses.models import Status
+# from task_manager.permission_mixins import TaskManagerFormMixin
 
 
 class StatusIndexView(UserLoginRequiredMixin, ListView):
@@ -69,9 +69,8 @@ class StatusUpdateView(UserLoginRequiredMixin,
 
 
 class StatusDeleteView(UserLoginRequiredMixin,
-                       TaskManagerFormMixin,
-                       ProtectObjectDeletionMixin,
                        SuccessMessageMixin,
+                       ProtectObjectDeletionMixin,
                        DeleteView):
     """
     Delete status.
@@ -86,5 +85,8 @@ class StatusDeleteView(UserLoginRequiredMixin,
         "title": _("Status deletion"),
         "url_for_delete": "delete_status",
     }
+    # ProtectObjectDeletionMixin
+    protect_message = _("Can't delete a status because it's in use")
+    denied_url = reverse_lazy("list_status")
     # SuccessMessageMixin attrs
     success_message = _("Status is successfully deleted")
