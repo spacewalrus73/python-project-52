@@ -138,7 +138,7 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.test_user = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
-            reverse_lazy("update_user", kwargs={"pk": self.test_user.id})
+            reverse_lazy("update_user", kwargs={"pk": self.test_user.pk})
         )
 
     def test_update_view_returns_correct_response(self):
@@ -161,13 +161,13 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.test_user.save()
 
         response = self.client.get(
-            path=reverse_lazy("update_user", kwargs={"pk": self.test_user.id}),
+            path=reverse_lazy("update_user", kwargs={"pk": self.test_user.pk}),
             follow=True,
         )
 
         self.assertRedirects(
             response=response,
-            expected_url="/login/?next=/users/1/update/",
+            expected_url="/login/?next=/users/2/update/",
         )
         self.assertMessages(
             response=response,
@@ -183,7 +183,7 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         # 2 - id of second test_user,
         # that could potentially be modified by active user
         response = self.client.get(
-            path=reverse_lazy("update_user", kwargs={"pk": 2}),
+            path=reverse_lazy("update_user", kwargs={"pk": 3}),
             follow=True,
         )
 
@@ -281,7 +281,7 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
 
     def test_user_cant_delete_staff_that_dont_belong_to_him(self):
         response = self.client.post(
-            path=reverse_lazy("delete_user", kwargs={"pk": 2}),
+            path=reverse_lazy("delete_user", kwargs={"pk": 3}),
             follow=True,
 
         )
