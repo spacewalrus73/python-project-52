@@ -1,0 +1,26 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "name": "Task1",
+      "description": "Test task for tests",
+      "status": 1,
+      "author": 3,
+      "performer": 2,
+      "created_at": "2024-02-19 08:43:12.123+00:00"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "name": "Task2",
+      "description": "Test task 2 for tests",
+      "status": 2,
+      "author": 2,
+      "performer": 3,
+      "created_at": "2024-02-19 08:43:13.123+00:00"
+    }
+  }
+]
