@@ -1,7 +1,7 @@
 [
   {
     "model": "users.user",
-    "id": 2,
+    "pk": 2,
     "fields": {
       "first_name": "Guido",
       "last_name": "Van Rossum",
@@ -12,7 +12,7 @@
   },
   {
     "model": "users.user",
-    "id": 3,
+    "pk": 3,
     "fields": {
       "first_name": "Linus",
       "last_name": "Torvalds",
