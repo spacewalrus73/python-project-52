@@ -8,6 +8,8 @@ from task_manager.users.models import User
 class Task(models.Model):
     """Model of task in project."""
 
+    objects = models.Manager()
+
     name = models.CharField(
         max_length=255,
         unique=True,
