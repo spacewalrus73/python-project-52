@@ -1,0 +1,12 @@
+{
+  "/login/?next=/users/3/delete/": ["delete_user", 3],
+  "/login/?next=/users/3/update/": ["update_user", 3],
+  "/login/?next=/statuses/": "list_status",
+  "/login/?next=/statuses/create/": "create_status",
+  "/login/?next=/statuses/1/update/": ["update_status", 1],
+  "/login/?next=/statuses/1/delete/": ["delete_status", 1],
+  "/login/?next=/tasks/": "list_task",
+  "/login/?next=/tasks/create/": "create_task",
+  "/login/?next=/tasks/1/update/": ["update_task", 1],
+  "/login/?next=/tasks/1/delete/": ["delete_task", 1]
+}
