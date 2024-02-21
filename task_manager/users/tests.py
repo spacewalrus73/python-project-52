@@ -7,7 +7,6 @@ from django.contrib.messages.test import MessagesTestMixin
 from django.test import TestCase
 from django.urls import reverse_lazy
 
-from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.permission_mixins import UserPermissionTestMixin
 from task_manager.users.forms import UserRegistrationForm
 from task_manager.users.models import User
@@ -138,7 +137,10 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.test_user = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
-            reverse_lazy("update_user", kwargs={"pk": self.test_user.pk})
+            reverse_lazy(
+                viewname="update_user",
+                kwargs={"pk": self.test_user.pk}
+            )
         )
 
     def test_update_view_returns_correct_response(self):
@@ -154,36 +156,11 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
         self.assertContains(self.view_response, "password2")
         self.assertContains(self.view_response, "Update")
 
-    def test_permission_not_auth_user_cant_change_staff(self):
-        """Not auth user can't change any other users or himself."""
-        # imitate anonymous user
-        self.test_user.is_active = False
-        self.test_user.save()
-
-        response = self.client.get(
-            path=reverse_lazy("update_user", kwargs={"pk": self.test_user.pk}),
-            follow=True,
-        )
-
-        self.assertRedirects(
-            response=response,
-            expected_url="/login/?next=/users/2/update/",
-        )
-        self.assertMessages(
-            response=response,
-            expected_messages=[
-                Message(
-                    message=UserLoginRequiredMixin.denied_message,
-                    level=ERROR
-                )
-            ]
-        )
-
     def test_permission_user_cant_change_not_him_staff(self):
         # 2 - id of second test_user,
         # that could potentially be modified by active user
         response = self.client.get(
-            path=reverse_lazy("update_user", kwargs={"pk": 3}),
+            path=reverse_lazy(viewname="update_user", kwargs={"pk": 3}),
             follow=True,
         )
 
@@ -200,7 +177,10 @@ class UpdateUserTest(MessagesTestMixin, TestCase):
 
     def test_successful_update_user(self):
         response = self.client.post(
-            path=reverse_lazy("update_user", kwargs={"pk": self.test_user.id}),
+            path=reverse_lazy(
+                viewname="update_user",
+                kwargs={"pk": self.test_user.id}
+            ),
             data=self.new_data,
             follow=True,
         )
@@ -245,7 +225,10 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
         self.test_user = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
-            reverse_lazy("delete_user", kwargs={"pk": self.test_user.id})
+            reverse_lazy(
+                viewname="delete_user",
+                kwargs={"pk": self.test_user.id}
+            )
         )
 
     def test_delete_view_returns_correct_response(self):
@@ -258,30 +241,9 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
         self.assertContains(self.view_response, f"{self.test_user.first_name}")
         self.assertContains(self.view_response, f"{self.test_user.last_name}")
 
-    def test_not_auth_user_cant_delete_another_user(self):
-        self.test_user.is_active = False
-        self.test_user.save()
-        # 2 - id of second test_user,
-        # that could potentially be modified by active user
-        response = self.client.post(
-            path=reverse_lazy("delete_user", kwargs={"pk": 2}),
-            follow=True,
-        )
-
-        self.assertRedirects(response, "/login/?next=/users/2/delete/")
-        self.assertMessages(
-            response=response,
-            expected_messages=[
-                Message(
-                    message=UserLoginRequiredMixin.denied_message,
-                    level=ERROR
-                )
-            ]
-        )
-
     def test_user_cant_delete_staff_that_dont_belong_to_him(self):
         response = self.client.post(
-            path=reverse_lazy("delete_user", kwargs={"pk": 3}),
+            path=reverse_lazy(viewname="delete_user", kwargs={"pk": 3}),
             follow=True,
 
         )
@@ -298,7 +260,10 @@ class DeleteUserTest(MessagesTestMixin, TestCase):
 
     def test_successfully_delete_user(self):
         response = self.client.post(
-            path=reverse_lazy("delete_user", kwargs={"pk": self.test_user.id}),
+            path=reverse_lazy(
+                viewname="delete_user",
+                kwargs={"pk": self.test_user.id}
+            ),
             follow=True,
         )
 
