@@ -14,7 +14,7 @@ from task_manager.users.models import User
 
 
 class IndexStatusTest(MessagesTestMixin, TestCase):
-    """Test statuses list. Authentication required."""
+    """Test statuses list."""
 
     fixtures = ["test_users", "test_status"]
 
@@ -36,7 +36,7 @@ class IndexStatusTest(MessagesTestMixin, TestCase):
 
 
 class CreateStatusTest(MessagesTestMixin, TestCase):
-    """Test create status. Authentication required."""
+    """Test create status."""
 
     fixtures = ["test_users", "test_status"]
     exists_error: str = "Status with this Name already exists."
@@ -89,7 +89,7 @@ class CreateStatusTest(MessagesTestMixin, TestCase):
 
 
 class UpdateStatusTest(MessagesTestMixin, TestCase):
-    """Test update status. Authentication required."""
+    """Test update status."""
 
     fixtures = ["test_users", "test_status"]
 
@@ -154,7 +154,7 @@ class UpdateStatusTest(MessagesTestMixin, TestCase):
 
 
 class DeleteStatusTest(MessagesTestMixin, TestCase):
-    """Test delete status. Authentication required."""
+    """Test delete status."""
 
     fixtures = ["test_users", "test_status"]
 
