@@ -164,7 +164,7 @@ class DeleteStatusTest(MessagesTestMixin, TestCase):
         self.test_user: User = User.objects.first()
         self.client.force_login(self.test_user)
         self.view_response = self.client.get(
-            reverse_lazy(
+            path=reverse_lazy(
                 viewname="delete_status",
                 kwargs={"pk": self.test_status_id}
             ),
@@ -182,7 +182,7 @@ class DeleteStatusTest(MessagesTestMixin, TestCase):
 
     def test_successful_delete_status(self):
         response = self.client.post(
-            reverse_lazy(
+            path=reverse_lazy(
                 viewname="delete_status",
                 kwargs={"pk": self.test_status_id}
             ),
