@@ -81,3 +81,5 @@ class TaskDeleteView(UserLoginRequiredMixin,
         "title": _("Task deletion"),
         "url_for_delete": "delete_task",
     }
+    # SuccessMessageMixin attrs
+    success_message = _("Task successfully deleted")
