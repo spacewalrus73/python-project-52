@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 from task_manager.tasks.views import TaskCreateView
+from task_manager.tasks.views import TaskDeleteView
 from task_manager.tasks.views import TaskUpdateView
 from task_manager.users.models import User
 
@@ -199,3 +200,49 @@ class UpdateTaskTest(MessagesTestMixin, TestCase):
             follow=True,
         )
         self.assertContains(response, self.exist_error)
+
+
+class DeleteTaskTest(MessagesTestMixin, TestCase):
+    """Test delete task."""
+
+    fixtures = ["test_users", "test_status", "test_tasks"]
+
+    def setUp(self):
+        self.test_id: int = Task.objects.first().id
+        self.test_task: Task = Task.objects.first()
+        self.test_user: User = User.objects.last()
+        self.client.force_login(self.test_user)
+        self.response = self.client.get(
+            path=reverse_lazy(
+                viewname="delete_task",
+                kwargs={"pk": self.test_id}
+            ),
+            follow=True,
+        )
+
+    def test_delete_view_returns_correct_response(self):
+        self.assertEqual(self.response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(self.response, "delete.html")
+
+    def test_delete_view_contains_correct_fields(self):
+        self.assertContains(self.response, "Task deletion")
+        self.assertContains(self.response, f"{self.test_task.name}")
+        self.assertContains(self.response, "Yes, delete")
+
+    def test_successful_delete_status(self):
+        response = self.client.post(
+            path=reverse_lazy(
+                viewname="delete_task",
+                kwargs={"pk": self.test_id}
+            ),
+            follow=True,
+        )
+
+        self.assertRedirects(response, reverse_lazy("list_task"))
+        self.assertMessages(
+            response=response,
+            expected_messages=[
+                Message(message=TaskDeleteView.success_message, level=SUCCESS)
+            ]
+        )
+        self.assertNotContains(response, self.test_task.name)
