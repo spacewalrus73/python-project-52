@@ -16,8 +16,17 @@ from task_manager.users.models import User
 class UserIndexView(ListView):
     """List all User objects."""
     model = User
-    template_name = "users_table.html"
-    context_object_name = "users"
+    template_name = "list_objects.html"
+    extra_context = {
+        "title": _("Users"),
+        "button_text": None,
+        "captions": [
+            _("Username"), _("Full name"), _("Creation date")
+        ],
+        "url_to_create": reverse_lazy("create_user"),
+        "url_to_update": "update_user",
+        "url_to_delete": "delete_user",
+    }
     # Optimize orm query and exclude admin
     queryset = User.objects.exclude(is_superuser=True).values(
         'id',
