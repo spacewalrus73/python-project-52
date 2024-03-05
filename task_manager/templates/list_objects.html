@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% block content %}
+<div class="container wrapper flex-grow-1 text-left">
+    <h1 class="my-4">{{ title }}</h1>
+
+    {% if button_text %}
+        <div class="my-4">{% bootstrap_button button_text size='md' button_class='btn-success' href=url_to_create %}</div>
+    {% endif %}
+
+    {% if title == _("Tasks") %}
+        <div class="card text-bg-secondary md-3 w-50">
+            <div class="card-body bg-grey">
+                <form class="form-inline left" method="get">
+                    {% bootstrap_form filter.form field_class="ml-2 mr-3" %}
+                    {% bootstrap_button filter_text button_type="submit" button_class="btn btn-secondary btn-md text-dark" %}
+                </form>
+            </div>
+        </div>
+        <br>
+    {% endif %}
+
+    <table class="table table-stripped text-center text-light">
+        <thead>
+            <tr>
+                <th>ID</th>
+                {% for caption in captions %}
+                <th>{% trans caption %}</th>
+                {% endfor %}
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td>{{ object.id }}</td>
+                {% if object.username %}
+                    <td>{{ object.username }} </td>
+                {% endif %}
+                {% if object.first_name and object.last_name %}
+                    <td>{{ object.first_name }} {{ object.last_name }}</td>
+                {% else %}
+                    <td>{{ object.name }}</td>
+                {% endif %}
+                {% if object.status %}
+                    <td>{{ object.status }}</td>
+                    <td>{{ object.author }}</td>
+                    <td>{{ object.performer }}</td>
+                {% endif %}
+                {% if object.created_at %}
+                    <td>{{ object.created_at|date:"d.m.Y H:i" }}</td>
+                {% else %}
+                    <td>{{ object.date_joined|date:"d.m.Y H:i" }}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url url_to_update pk=object.id %}">{% trans "Edit" %}</a>
+                    <br>
+                    <a href="{% url url_to_delete pk=object.id %}">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
