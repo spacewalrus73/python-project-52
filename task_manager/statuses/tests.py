@@ -25,7 +25,7 @@ class IndexStatusTest(MessagesTestMixin, TestCase):
 
     def test_list_view_returns_correct_response(self):
         self.assertEqual(self.response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(self.response, "status_table.html")
+        self.assertTemplateUsed(self.response, "list_objects.html")
 
     def test_list_view_contains_correct_fields(self):
         self.assertContains(self.response, "name")

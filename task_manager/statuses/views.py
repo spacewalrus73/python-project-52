@@ -10,20 +10,21 @@ from task_manager.permission_mixins import ProtectObjectDeletionMixin
 from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.statuses.forms import StatusForm
 from task_manager.statuses.models import Status
-# from task_manager.permission_mixins import TaskManagerFormMixin
 
 
 class StatusIndexView(UserLoginRequiredMixin, ListView):
-    """
-    List all Status objects.
-    Authorization required.
-    """
+    """List all Status objects. Authentication required."""
     model = Status
-    template_name = "status_table.html"
-    context_object_name = "statuses"
+    template_name = "list_objects.html"
     extra_context = {
         "title": _("Statuses"),
         "button_text": _("Create status"),
+        "captions": [
+            _("Name"), _("Creation date")
+        ],
+        "url_to_create": reverse_lazy("create_status"),
+        "url_to_update": "update_status",
+        "url_to_delete": "delete_status",
     }
 
 
@@ -32,7 +33,7 @@ class StatusCreateView(UserLoginRequiredMixin,
                        CreateView):
     """
     The view shows create form for new status.
-    Authorization required.
+    Authentication required.
     """
     # CreateView attrs
     model = Status
@@ -74,7 +75,7 @@ class StatusDeleteView(UserLoginRequiredMixin,
                        DeleteView):
     """
     Delete status.
-    Authorization is required.
+    Authentication is required.
     Status may be deleted only if it isn't used.
     """
     # DeleteView attrs
