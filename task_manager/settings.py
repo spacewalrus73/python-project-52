@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'task_manager.users',
     'task_manager.statuses',
     'task_manager.tasks',
+    'task_manager.labels',
 ]
 
 MIDDLEWARE = [
@@ -152,5 +153,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = LOGIN_REDIRECT_URL
 
-ADMIN_ID = os.getenv("ADMIN_ID")
 FIXTURE_DIRS = ["task_manager/fixtures"]
