@@ -18,11 +18,19 @@ from task_manager.tasks.models import Task
 class TaskIndexView(UserLoginRequiredMixin, FilterView, ListView):
     """List all tasks. Authorization required."""
     model = Task
-    template_name = "tasks_table.html"
-    context_object_name = "tasks"
+    template_name = "list_objects.html"
     filterset_class = TaskFilterForm
     extra_context = {
-        "button_text": _("Show")
+        "title": _("Tasks"),
+        "button_text": _("Create task"),
+        "filter_text": _("Show"),
+        "captions": [
+            _("Name"), _("Status"), _("Author"),
+            _("Performer"), _("Creation date"),
+        ],
+        "url_to_create": reverse_lazy("create_task"),
+        "url_to_update": "update_task",
+        "url_to_delete": "delete_task",
     }
 
 

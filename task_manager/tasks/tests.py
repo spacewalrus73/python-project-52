@@ -26,7 +26,7 @@ class TaskIndexTest(MessagesTestMixin, TestCase):
 
     def test_list_view_returns_correct_response(self):
         self.assertEqual(self.view_response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(self.view_response, "tasks_table.html")
+        self.assertTemplateUsed(self.view_response, "list_objects.html")
 
     def test_list_view_contains_correct_fields(self):
         self.assertContains(self.view_response, "ID")
@@ -45,17 +45,6 @@ class TaskIndexTest(MessagesTestMixin, TestCase):
         self.assertContains(self.view_response, "SecondStatus")
         self.assertContains(self.view_response, "Linus Torvalds")
         self.assertContains(self.view_response, "Guido Van Rossum")
-
-    # def test_filter_task(self):
-    #     filter_response = self.client.post(
-    #         path=reverse_lazy(viewname="list_task",
-    #                           kwargs={"status": Status.objects.first().id,
-    #                                   "performer": User.objects.first().id}),
-    #         follow=True,
-    #     )
-    #
-    #     self.assertContains(filter_response, "Task1")
-    #     self.assertNotContains(filter_response, "Task2")
 
 
 class TaskCreateTest(MessagesTestMixin, TestCase):
