@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.db.models import RestrictedError
+from django.db.models import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -65,7 +65,7 @@ class ProtectObjectDeletionMixin(DeletionMixin):
     def post(self, request, *args, **kwargs):
         try:
             return super().post(request, *args, **kwargs)
-        except RestrictedError:
+        except ProtectedError:
             messages.add_message(
                 request=request,
                 level=messages.ERROR,
@@ -94,13 +94,3 @@ class TaskDeletionTestMixin(UserPassesTestMixin):
             )
             return redirect(self.redirect_url)
         return super().dispatch(request, *args, **kwargs)
-
-
-# class TaskManagerFormMixin(FormMixin):
-#
-#     def get_context_data(self, **kwargs):
-#         """Displays object's name to be deleted."""
-#         obj = self.get_object()
-#         context = super().get_context_data(**kwargs)
-#         context["obj_name"] = obj.name
-#         return context
