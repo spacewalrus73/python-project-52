@@ -15,16 +15,17 @@ class TaskForm(ModelForm):
                                     empty_label="Select status")
     performer = forms.ModelChoiceField(
         queryset=User.objects.exclude(is_superuser=True),
+        required=False,
         empty_label="Select performer"
     )
-    labels = forms.ModelChoiceField(
+    labels = forms.ModelMultipleChoiceField(
         queryset=Label.objects.all(),
-        empty_label="Select labels",
+        required=False,
     )
 
     class Meta:
         model = Task
-        fields = ["name", "description", "status", "performer"]
+        fields = ["name", "description", "status", "performer", "labels"]
 
 
 class TaskFilterForm(FilterSet):
