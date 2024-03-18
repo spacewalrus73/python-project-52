@@ -6,6 +6,7 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
+from task_manager.permission_mixins import ProtectObjectDeletionMixin
 from task_manager.permission_mixins import UserLoginRequiredMixin
 from task_manager.permission_mixins import UserPermissionTestMixin
 from task_manager.users.forms import UserRegistrationForm
@@ -77,6 +78,7 @@ class UserUpdateView(UserLoginRequiredMixin,
 
 class UserDeleteView(UserLoginRequiredMixin,
                      UserPermissionTestMixin,
+                     ProtectObjectDeletionMixin,
                      SuccessMessageMixin,
                      DeleteView):
     """
@@ -93,3 +95,6 @@ class UserDeleteView(UserLoginRequiredMixin,
     }
     # SuccessMessageMixin attrs
     success_message = _("User successfully deleted")
+    # ProtectObjectDeletionMixin
+    denied_url = reverse_lazy("list_user")
+    protect_message = _("Cannot delete a user because it is in use")
