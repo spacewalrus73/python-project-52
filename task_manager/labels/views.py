@@ -65,13 +65,13 @@ class LabelUpdateView(UserLoginRequiredMixin,
 
 
 class LabelDeleteView(UserLoginRequiredMixin,
-                      SuccessMessageMixin,
                       ProtectObjectDeletionMixin,
+                      SuccessMessageMixin,
                       DeleteView):
     """Deletion view of label object."""
     model = Label
     template_name = "delete.html"
-    success_url = reverse_lazy('list_status')
+    success_url = reverse_lazy('list_label')
     extra_context = {
         "title": _("Label deletion"),
         "url_for_delete": "delete_label",
