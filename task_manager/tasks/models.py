@@ -40,6 +40,7 @@ class Task(models.Model):
     performer = models.ForeignKey(
         to=User,
         on_delete=models.PROTECT,
+        blank=True,
         verbose_name=_("Performer"),
         related_name="performer",
     )
@@ -47,13 +48,18 @@ class Task(models.Model):
     labels = models.ManyToManyField(
         Label,
         through="TaskAndLabelNode",
-        through_fields=("task", "label")
+        blank=True,
+        verbose_name=_("Labels"),
+        related_name="labels",
     )
 
     created_at = models.DateTimeField(
         auto_now=True,
         verbose_name=_("Creation date")
     )
+
+    def __str__(self):
+        return self.name
 
 
 class TaskAndLabelNode(models.Model):
