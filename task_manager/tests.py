@@ -114,7 +114,7 @@ class AuthSystemTest(MessagesTestMixin, TestCase):
         # These fields are only available after login
         self.assertContains(response, "Users")
         self.assertContains(response, "Statuses")
-        self.assertContains(response, "Tags")
+        self.assertContains(response, "Labels")
         self.assertContains(response, "Tasks")
         self.assertContains(response, "Log out")
 
