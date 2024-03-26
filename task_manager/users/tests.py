@@ -27,7 +27,6 @@ class CreateUserTest(MessagesTestMixin, TestCase):
     unique_username: str = "A user with that username already exists."
     test_name: str = "TestUser"
     test_passwd: str = "000"
-    users_count: int = User.objects.count()
 
     def setUp(self):
         self.view_response = self.client.get(reverse_lazy("create_user"))
@@ -46,6 +45,7 @@ class CreateUserTest(MessagesTestMixin, TestCase):
         self.assertContains(self.view_response, "Register")
 
     def test_valid_registration_user(self):
+        before_users_count = User.objects.count()
         response = self.client.post(
             path=reverse_lazy("create_user"),
             data={
@@ -66,7 +66,7 @@ class CreateUserTest(MessagesTestMixin, TestCase):
             ]
         )
         # Check that user was created in db
-        self.assertNotEqual(self.users_count, User.objects.count())
+        self.assertNotEqual(before_users_count, User.objects.count())
         # Check that user can log in now
         login_response = self.client.post(
             path=reverse_lazy("login"),
