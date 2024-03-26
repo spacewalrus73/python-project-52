@@ -16,7 +16,7 @@ from task_manager.users.models import User
 class IndexStatusTest(MessagesTestMixin, TestCase):
     """Test statuses list."""
 
-    fixtures = ["test_users", "test_status"]
+    fixtures = ["test_users"]
 
     def setUp(self):
         self.test_user: User = User.objects.first()
