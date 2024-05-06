@@ -40,7 +40,7 @@ class Task(models.Model):
     performer = models.ForeignKey(
         to=User,
         on_delete=models.PROTECT,
-        blank=True,
+        null=True,
         verbose_name=_("Performer"),
         related_name="performer",
     )
