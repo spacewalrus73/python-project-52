@@ -46,7 +46,11 @@
                 {% if object.status %}
                     <td>{{ object.status }}</td>
                     <td>{{ object.author }}</td>
+                    {% if object.performer %}
                     <td>{{ object.performer }}</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
                 {% endif %}
                 {% if object.created_at %}
                     <td>{{ object.created_at|date:"d.m.Y H:i" }}</td>
