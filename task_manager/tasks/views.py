@@ -10,7 +10,7 @@ from django_filters.views import FilterView
 
 from task_manager.permission_mixins import TaskDeletionTestMixin
 from task_manager.permission_mixins import UserLoginRequiredMixin
-from task_manager.tasks.forms import TaskFilterForm
+from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import TaskForm
 from task_manager.tasks.models import Task
 
@@ -19,7 +19,7 @@ class TaskIndexView(UserLoginRequiredMixin, FilterView, ListView):
     """List all tasks. Authorization required."""
     model = Task
     template_name = "list_objects.html"
-    filterset_class = TaskFilterForm
+    filterset_class = TaskFilter
     extra_context = {
         "title": _("Tasks"),
         "button_text": _("Create task"),

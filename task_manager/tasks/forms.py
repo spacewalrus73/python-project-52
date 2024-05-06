@@ -1,7 +1,5 @@
 from django import forms
 from django.forms import ModelForm
-from django_filters import FilterSet
-from django_filters import ModelChoiceFilter
 
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
@@ -11,12 +9,13 @@ from task_manager.users.models import User
 
 class TaskForm(ModelForm):
     """Create form for tasks."""
-    status = forms.ModelChoiceField(queryset=Status.objects.all(),
-                                    empty_label="Select status")
+    status = forms.ModelChoiceField(
+        queryset=Status.objects.all(),
+        required=False,
+    )
     performer = forms.ModelChoiceField(
         queryset=User.objects.exclude(is_superuser=True),
         required=False,
-        empty_label="Select performer"
     )
     labels = forms.ModelMultipleChoiceField(
         queryset=Label.objects.all(),
@@ -26,16 +25,3 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ["name", "description", "status", "performer", "labels"]
-
-
-class TaskFilterForm(FilterSet):
-    """Filter form for tasks."""
-
-    status = ModelChoiceFilter(queryset=Status.objects.all())
-    performer = ModelChoiceFilter(
-        queryset=User.objects.exclude(is_superuser=True)
-    )
-
-    class Meta:
-        model = Task
-        fields = ["status", "performer"]
