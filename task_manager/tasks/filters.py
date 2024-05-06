@@ -1,5 +1,6 @@
 import django_filters
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
@@ -15,7 +16,7 @@ class TaskFilter(django_filters.FilterSet):
     )
     labels = django_filters.ModelChoiceFilter(queryset=Label.objects.all())
     own_task = django_filters.BooleanFilter(
-        label="Only own tasks",
+        label=_("Only own tasks"),
         method="get_user_own_tasks",
         widget=forms.CheckboxInput
     )
