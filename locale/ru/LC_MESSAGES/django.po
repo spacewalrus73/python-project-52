@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-26 15:19+0000\n"
+"POT-Creation-Date: 2024-05-06 15:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgid "Change of label"
 msgstr "Изменение метки"
 
 #: task_manager/labels/views.py:60 task_manager/statuses/views.py:65
-#: task_manager/templates/list_objects.html:57
+#: task_manager/templates/list_objects.html:61
 #: task_manager/templates/task_detail.html:32
 msgid "Edit"
 msgstr "Изменить"
@@ -126,6 +126,10 @@ msgstr "Невозможно удалить статус, потому что о
 #: task_manager/statuses/views.py:93
 msgid "Status is successfully deleted"
 msgstr "Статус успешно удален"
+
+#: task_manager/tasks/filters.py:19
+msgid "Only own tasks"
+msgstr "Только свои задачи"
 
 #: task_manager/tasks/models.py:24
 msgid "Description"
@@ -218,7 +222,7 @@ msgstr "Вход"
 msgid "Registration"
 msgstr "Регистрация"
 
-#: task_manager/templates/list_objects.html:59
+#: task_manager/templates/list_objects.html:63
 #: task_manager/templates/task_detail.html:35
 msgid "Delete"
 msgstr "Удалить"
