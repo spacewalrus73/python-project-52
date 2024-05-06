@@ -11,7 +11,7 @@ class TaskForm(ModelForm):
     """Create form for tasks."""
     status = forms.ModelChoiceField(
         queryset=Status.objects.all(),
-        required=False,
+        required=True,
     )
     performer = forms.ModelChoiceField(
         queryset=User.objects.exclude(is_superuser=True),
