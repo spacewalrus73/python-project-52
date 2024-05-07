@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
 
-    'task_manager',
+    'task_manager.core',
     'task_manager.users',
     'task_manager.statuses',
     'task_manager.tasks',
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-ROOT_URLCONF = 'task_manager.urls'
+ROOT_URLCONF = 'task_manager.core.urls'
 
 TEMPLATES = [
     {
@@ -89,7 +89,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'task_manager.wsgi.application'
+WSGI_APPLICATION = 'task_manager.core.wsgi.application'
 
 
 # Database

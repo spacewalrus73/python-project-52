@@ -8,8 +8,8 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django_filters.views import FilterView
 
-from task_manager.permission_mixins import TaskDeletionTestMixin
-from task_manager.permission_mixins import UserLoginRequiredMixin
+from task_manager.core.permission_mixins import TaskDeletionTestMixin
+from task_manager.core.permission_mixins import UserLoginRequiredMixin
 from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import TaskForm
 from task_manager.tasks.models import Task

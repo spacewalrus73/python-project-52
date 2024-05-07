@@ -6,9 +6,9 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from task_manager.permission_mixins import ProtectObjectDeletionMixin
-from task_manager.permission_mixins import UserLoginRequiredMixin
-from task_manager.permission_mixins import UserPermissionTestMixin
+from task_manager.core.permission_mixins import ProtectObjectDeletionMixin
+from task_manager.core.permission_mixins import UserLoginRequiredMixin
+from task_manager.core.permission_mixins import UserPermissionTestMixin
 from task_manager.users.forms import UserRegistrationForm
 from task_manager.users.forms import UserUpdateForm
 from task_manager.users.models import User

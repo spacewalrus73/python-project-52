@@ -6,8 +6,8 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from task_manager.permission_mixins import ProtectObjectDeletionMixin
-from task_manager.permission_mixins import UserLoginRequiredMixin
+from task_manager.core.permission_mixins import ProtectObjectDeletionMixin
+from task_manager.core.permission_mixins import UserLoginRequiredMixin
 from task_manager.statuses.forms import StatusForm
 from task_manager.statuses.models import Status
 
