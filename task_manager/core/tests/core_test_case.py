@@ -1,23 +1,20 @@
 from collections.abc import Iterable
-from http import HTTPStatus
 from json import load
 from typing import Any
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.messages import ERROR
+from django.contrib.messages import INFO
 from django.contrib.messages import Message
+from django.contrib.messages import SUCCESS
 from django.test import TestCase
 from django.urls import reverse_lazy
 
 from task_manager.core.permission_mixins import UserLoginRequiredMixin
+from task_manager.core.views import UserLoginView
 from task_manager.users.models import User
 
-
-TEXT_PAGE = (
-    "Practical programming courses",
-    "Hello from Hexlet!",
-    "Hexlet", "Learn more"
-)
+LinkNames: Iterable[str, ...] = tuple
 
 
 class AuthTestCase(TestCase):
@@ -28,25 +25,42 @@ class AuthTestCase(TestCase):
         "password": "123",
     }
 
-    OK = HTTPStatus.OK
+    invalid_credentials: dict = {
+        "username": "UsEr",
+        "password": "12$",
+    }
 
-    not_auth_fields: Iterable = (
-        "Task manager", "Users", "Enter", "Registration",
-        *TEXT_PAGE
+    # Text to check from homepage
+    home_page_text: LinkNames = (
+        "Practical programming courses",
+        "Hello from Hexlet!",
+        "Hexlet", "Learn more"
     )
 
-    auth_fields: Iterable = (
-        "Task manager", "Users", "Statuses", "Labels", "Tasks", "Log out",
-        *TEXT_PAGE
-    )
+    # Persistently displayed link names, regardless of authorisation
+    permanent_link_names: LinkNames = ("Task manager", "Users")
 
-    not_auth_links: Iterable = ("/users/", "/login/")
+    # Link names displayed on an unauthorised homepage
+    not_auth_fields: LinkNames = permanent_link_names \
+        + ("Enter", "Registration") \
+        + home_page_text
 
-    auth_links: Iterable = (
-        "/users/", "/logout/", "/statuses/", "/labels/", "/tasks/"
-    )
+    # Link names displayed on authorised homepage
+    auth_fields: Iterable = permanent_link_names \
+        + ("Statuses", "Labels", "Tasks", "Log out") \
+        + home_page_text
 
-    error_message: str = AuthenticationForm \
+    # Permanent link, which should always contains on html page
+    permanent_links: LinkNames = ("/", "/users/", "https://ru.hexlet.io/")
+
+    # Links to pages on not authorised homepage
+    not_auth_links: LinkNames = permanent_links \
+        + ("/login/", "/users/create/")
+    # Links to pages on authorised homepage
+    auth_links: LinkNames = permanent_links \
+        + ("/statuses/", "/labels/", "/tasks/", "/logout/")
+
+    login_error_message: str = AuthenticationForm \
         .error_messages \
         .get("invalid_login") % {"username": "username"}
 
@@ -54,15 +68,18 @@ class AuthTestCase(TestCase):
         message=UserLoginRequiredMixin.denied_message, level=ERROR
     )
 
+    success_login_message: Message = Message(
+        message=UserLoginView.success_message, level=SUCCESS
+    )
+
+    success_logout_message: Message = Message(
+        message="You're logged out", level=INFO
+    )
+
     def setUp(self) -> None:
-        self.user = User.objects.create_user(**self.credentials)
+        User.objects.create_user(**self.credentials)
         self.login_view = self.client.get(reverse_lazy("login"))
         self.home_view = self.client.get(reverse_lazy("home"))
-        self.logged = self.client.post(
-            path=reverse_lazy("login"),
-            data=self.credentials,
-            follow=True,
-        )
 
     @staticmethod
     def serialize(file: str) -> Any:

@@ -1,3 +1,7 @@
+from http import HTTPStatus
+
+from django.urls import reverse_lazy
+
 from .core_test_case import AuthTestCase
 
 
@@ -6,7 +10,7 @@ class TestHomePage(AuthTestCase):
 
     def test_home_page_returns_correct_response(self):
         """Test code and template name"""
-        self.assertEqual(self.home_view.status_code, self.OK)
+        self.assertEqual(self.home_view.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(self.home_view, "home.html")
 
     def test_home_page_contains_correct_fields_without_authorization(self):
@@ -24,7 +28,12 @@ class TestHomePage(AuthTestCase):
         Test that fields name and their links
         are displayed for auth user
         """
+        logged_response = self.client.post(
+            path=reverse_lazy("login"),
+            data=self.credentials,
+            follow=True,
+        )
         for test_field_name in self.auth_fields:
-            self.assertContains(self.logged, test_field_name)
+            self.assertContains(logged_response, test_field_name)
         for test_link in self.auth_links:
-            self.assertContains(self.logged, test_link)
+            self.assertContains(logged_response, test_link)
