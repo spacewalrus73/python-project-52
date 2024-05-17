@@ -1,12 +1,11 @@
 from http import HTTPStatus
 
-from django.contrib.messages.test import MessagesTestMixin
 from django.urls import reverse_lazy
 
 from .core_test_case import AuthTestCase
 
 
-class TestAuthSystem(MessagesTestMixin, AuthTestCase):
+class TestAuthSystem(AuthTestCase):
     """Testing login and logout users."""
 
     def test_login_page_returns_correct_response(self):

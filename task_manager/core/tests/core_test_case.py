@@ -7,8 +7,10 @@ from django.contrib.messages import ERROR
 from django.contrib.messages import INFO
 from django.contrib.messages import Message
 from django.contrib.messages import SUCCESS
+from django.contrib.messages.test import MessagesTestMixin
 from django.test import TestCase
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 from task_manager.core.permission_mixins import UserLoginRequiredMixin
 from task_manager.core.views import UserLoginView
@@ -17,7 +19,7 @@ from task_manager.users.models import User
 LinkNames: Iterable[str, ...] = tuple
 
 
-class AuthTestCase(TestCase):
+class AuthTestCase(MessagesTestMixin, TestCase):
     """Testcase special for auth system and homepage."""
 
     credentials: dict = {
@@ -32,22 +34,22 @@ class AuthTestCase(TestCase):
 
     # Text to check from homepage
     home_page_text: LinkNames = (
-        "Practical programming courses",
-        "Hello from Hexlet!",
-        "Hexlet", "Learn more"
+        _("Practical programming courses"),
+        _("Hello from Hexlet!"),
+        _("Hexlet"), _("Learn more"),
     )
 
     # Persistently displayed link names, regardless of authorisation
-    permanent_link_names: LinkNames = ("Task manager", "Users")
+    permanent_link_names: LinkNames = (_("Task manager"), _("Users"))
 
     # Link names displayed on an unauthorised homepage
     not_auth_fields: LinkNames = permanent_link_names \
-        + ("Enter", "Registration") \
+        + (_("Enter"), _("Registration")) \
         + home_page_text
 
     # Link names displayed on authorised homepage
     auth_fields: Iterable = permanent_link_names \
-        + ("Statuses", "Labels", "Tasks", "Log out") \
+        + (_("Statuses"), _("Labels"), _("Tasks"), _("Log out")) \
         + home_page_text
 
     # Permanent link, which should always contains on html page
@@ -73,7 +75,7 @@ class AuthTestCase(TestCase):
     )
 
     success_logout_message: Message = Message(
-        message="You're logged out", level=INFO
+        message=_("You're logged out"), level=INFO
     )
 
     def setUp(self) -> None:
